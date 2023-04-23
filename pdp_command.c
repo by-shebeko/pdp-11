@@ -21,3 +21,9 @@ Command cmd[] = {
     {0170000, 0060000, "add", do_add},
     {0177777, 0000000, "halt", do_halt}
 };
+
+void do_mov() 
+{
+    w_write(dd.a, (ss.val & 0xFFFF)); //dd ss are ending parts 
+    return;
+}
