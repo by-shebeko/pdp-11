@@ -23,6 +23,7 @@ int main()
     return 0;
 }
 
+
 void b_write(Adress adr, byte b)
 {
     if (adr % 2 == 0)
@@ -87,7 +88,6 @@ void test_mem()
     w = 0x3456;
     w_write(a, w);
     wres = w_read(a);
-
     // тут полезно написать отладочную печать a, w, wres
     fprintf(stderr, "a=%06o w=%04x wres=%04x\n", a, w, wres);
     assert(w == wres);
@@ -97,20 +97,16 @@ void test_mem()
     fprintf(stderr, "Пишем 2 байта, читаем слово\n");
     a = 4;        // другой адрес
     w = 0xa1b2;
-
     // little-endian, младшие разряды по меньшему адресу
     b0 = 0xb2;
     b1 = 0xa1;
     b_write(a, b0);
     b_write(a+1, b1);
     wres = w_read(a);
-
     // тут полезно написать отладочную печать a, w, wres
     fprintf(stderr, "a=%06o b1=%02hhx b0=%02hhx wres=%04x\n", a, b1, b0, wres);
     assert(w == wres);
 
 
-    // еще тесты 
-
-
+    //
 }
