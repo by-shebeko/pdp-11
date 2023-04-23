@@ -1,3 +1,5 @@
+#include "pdp-11.c"
+
 void test_mem()
 {
     Adress a;
