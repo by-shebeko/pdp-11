@@ -13,11 +13,11 @@ typedef struct {            // struct for commands for easier if cycle
     word mask;
     word opcode;
     char * name;
-    void (do_func)(void);
+    void (*do_func)(void);
 } Command;
 
 Command cmd[] = {
     {0170000, 0010000, "mov", do_mov},
     {0170000, 0060000, "add", do_add},
     {0177777, 0, "halt", do_halt}
-}
+};
