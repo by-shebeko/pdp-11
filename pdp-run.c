@@ -1,9 +1,7 @@
 #include <stdio.h>
-#include "pdp-mem.c"
+#include "pdp-mem.h"
 #include "pdp_command.c"
 
-word reg[8] ;        //registers R0, R1, ... R7. R7 program counter
-#define pc reg[7]   // к rep[7] можем обращаться как pc
 
 void run()
 {

@@ -53,10 +53,10 @@ void test_mem()
     
 }
 
-#define DEBUG 1
-#define MORE_DEBUG 2
+//#define DEBUG 1
+//#define MORE_DEBUG 2
 
-int debug_level = DEBUG;
+//int debug_level = DEBUG;
 
 /*void trace(int dbg_lvl, char * format, ...) 
 {//1/2 x3

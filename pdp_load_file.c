@@ -1,4 +1,6 @@
-#include "pdp-mem.c"
+#include <stdio.h>
+
+#include "pdp-load.h"
 
 void load_file(const char* filename) 
 {
