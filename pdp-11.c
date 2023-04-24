@@ -62,3 +62,4 @@ void w_write(Adress adr, word w)
     assert(adr % 2 == 0);
     mem[adr] = w;
 }
+
