@@ -20,3 +20,13 @@ void load_file(const char* filename)
 	}
 	fclose(fin);
 }
+
+void mem_dump(Adress k, int n) 
+{
+	printf("\nMemory dumping \n");
+	int i;
+	for (i = k; i < k + n; i = i + 2) 
+	{
+		printf("%07o : %07o\n", i, w_read(i));
+	}
+}
