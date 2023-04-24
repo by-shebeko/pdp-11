@@ -59,10 +59,14 @@ word w_read(Adress adr)
 
 void w_write(Adress adr, word w)
 {
+    if (adr < 8) {
+        reg[adr] = w; //registers are initialized in registres.c
+        return;
+    }
     assert(adr % 2 == 0);
     mem[adr] = w;
 }
-
+/*
 void test_mem()
 {
     Adress a;
@@ -110,3 +114,4 @@ void test_mem()
 
     //
 }
+*/
