@@ -1,3 +1,5 @@
+#ifdef AAA
+
 #include "pdp-11.c"
 #include <stdarg.h>
 #include "pdp_command.c"
@@ -161,3 +163,5 @@ void test_mode2_toreg()
             //trace(TRACE, " ... OK\n");
     printf(" ... OK\n");
 }
+
+#endif

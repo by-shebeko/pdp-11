@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "pdp-mem.h": "c",
+        "pdp-commands.h": "c"
+    }
+}

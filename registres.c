@@ -1,11 +1,7 @@
-# include "pdp-11.c"
+#include <stdio.h>
+#include <stdlib.h>
 
-word reg[8];        //6 - sp, 7 - pc
-
-typedef struct {
-    word val;     // значение (что)
-    Adress a;    // адрес (куда)
-} Arg;
+#include "pdp-register.h"
 
 Arg ss;
 Arg dd;
@@ -54,14 +50,13 @@ Arg get_mr(word w)
 
 }
 
-void print_reg()  //понимаю, что через число команд плохо, как по-другому - не поняла :(
+void print_reg()
 {
 	int i = 0;
-	printf("\nRegisters are: \n");
 
-	for (i = 0; i < 3; i++) 
+	for (i = 0; i < 8; i++) 
     {
-		printf("R%d : %.7o ", i, reg[i]);
+		printf("R%d:%o ", i, reg[i]);
 	}
 	printf("\n");
 }

@@ -1,40 +1,29 @@
 #include <stdio.h>
-#include "pdp-mem.c"
-#include "registres.c"
+#include <stdlib.h>
 
-#define NO_PARAMS 0
-#define HAS_DD 1
-#define HAS_SS 2
+#include "pdp-commands.h"
+#include "pdp-register.h"
 
 void do_mov ();
 void do_add ();
 void do_nothing ();
 void do_halt ();
+void do_unknown ();
 
-/*typedef struct {            // struct for commands for easier if cycle
-    word mask;
-    word opcode;
-    char * name;
-    void (*do_func)(void);
-} Command;
-*/
-
-typedef struct {
-    word mask;
-    word opcode;
-    char * name;
-    void (*do_command)(void);
-    char params;    // в 1 байте кодируем наличие разных типов аргументов
-} Command;
 
 Command list[] = {
     {0170000, 0010000, "mov", do_mov, HAS_SS | HAS_DD},
     {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD},
-    {0177777, 0000000, "halt", do_halt, NO_PARAMS}
+    {0177777, 0000000, "halt", do_halt, NO_PARAMS},
+    {0000000, 0000000, "unknown", do_unknown, NO_PARAMS}, //Эта команда должна быть всегда последней в массиве!
 };
+
+
 
 void do_halt () 
 {
+    printf("\n");
+    print_reg();
     printf("THE END!!!\n");
     exit(0);
 }
@@ -49,8 +38,11 @@ void do_add()
     w_write(dd.a, ss.val + dd.val);
 }
 
-void do_unknown (Command res)
-{}
+void do_unknown ()
+{
+    // exit(-1);
+
+}
 
 
 
