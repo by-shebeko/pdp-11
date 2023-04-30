@@ -205,5 +205,30 @@ void test_mode4()
     printf(" ... OKeee\n");
 }
 
+void test_mode5()
+{
+    printf ("test mode 5\n"); 
 
+    w_write(0776, 5);           //в адрес кладём значение, которое хотим получить
+    printf("%d\n",w_read(0776));  //0776 = 510
+
+    reg[1] = 12;    // dd
+    reg[3] = 01012;  // ss
+    w_write(01010, 0776); //записали адрес в адрес
+    
+    Command cmd = parse_cmd(0015301); //mov @-(R3) R1
+    assert(ss.a == 0776);
+    assert(ss.val == 5);
+    assert(dd.val == 12);
+    assert(dd.a == 1);
+
+    cmd.do_command();
+
+    // проверяем, что значение регистра уменьшилось на 2
+    assert(reg[3] == 01010);    
+    assert(reg[1] == 5);
+    
+
+    printf(" ... OK :()\n");
+}
 //#endif

@@ -7,3 +7,4 @@ void test_mode1_toreg();
 void test_mode2_toreg();
 void test_mode3_toreg();
 void test_mode4();
+void test_mode5();

@@ -59,9 +59,13 @@ Arg get_mr(word w)
 			printf("-(R%d) ", reg_n);
         break;
 
-        /*case 5:
+        case 5:
+            reg[reg_n] -= 2;
+			res.a = w_read(reg[reg_n]);
+            res.val = w_read(res.a);
 
-        break;*/
+            printf("@-(R%d) ", reg_n);
+        break;
 
         // мы еще не дописали другие моды
 
