@@ -1,9 +1,14 @@
 #ifdef AAA
 
-#include "pdp-11.c"
+#include "pdp-mem.h"
+#include "pdp-commands.h"
+#include "pdp-register.h"
 #include <stdarg.h>
-#include "pdp_command.c"
-# include <assert.h>
+#include <assert.h>
+#include <string.h>
+#include "pdp_tests.h"
+#include <stdio.h>
+
 
 void test_mem()
 {
@@ -26,7 +31,7 @@ void test_mem()
 
     // пишем слово, читаем слово
     fprintf(stderr, "Пишем и читаем слово\n");
-    a = 2;        // другой адрес
+    a = 12;        // другой адрес
     w = 0x3456;
     w_write(a, w);
     wres = w_read(a);
@@ -37,7 +42,7 @@ void test_mem()
 
     // пишем 2 байта, читаем 1 слово
     fprintf(stderr, "Пишем 2 байта, читаем слово\n");
-    a = 4;        // другой адрес
+    a = 14;        // другой адрес
     w = 0xa1b2;
     // little-endian, младшие разряды по меньшему адресу
     b0 = 0xb2;
@@ -55,99 +60,88 @@ void test_mem()
     
 }
 
-//#define DEBUG 1
-//#define MORE_DEBUG 2
-
-//int debug_level = DEBUG;
-
-/*void trace(int dbg_lvl, char * format, ...) 
-{//1/2 x3
-	if (dbg_lvl != debug_level)
-		return;
-	va_list argptr;
-	va_start (argptr, format);
-	vprintf(format, argptr);
-	va_end(argptr);	
-}
-*/
-
-
 // тест, что мы правильно определяем команды mov, add, halt
-void test_parse_mov()
+void test_parse_cmd()
 {
-            //trace(TRACE, __FUNCTION__);
-    Command cmd = parse_cmd(0017654);
-    assert(strcmp(cmd.name, "mov"));
-            //trace(TRACE, " ... OK\n");
-    printf(" ... OK\n");
+    printf ("test parse mov\n");  
+
+    Command cmd = parse_cmd(0011111);
+    assert(0 == strcmp(cmd.name, "mov"));
+    printf(" ... OK1\n");
+
+    printf ("test parse halt\n");    
+    cmd = parse_cmd(0000000);
+    assert(0 == strcmp(cmd.name, "halt"));
+    printf(" ... OK2\n");
+
+    printf ("test parse add\n");    
+    cmd = parse_cmd(0061111);
+    assert(0 == strcmp(cmd.name, "add"));
+    printf(" ... OK3\n");
 }
 
 // тест, что мы разобрали правильно аргументы ss и dd в mov R5, R3
 void test_mode0()
 {
-            //trace(TRACE, __FUNCTION__);
+    printf ("test mode 0\n");    
     reg[3] = 12;    // dd
     reg[5] = 34;    // ss
-    Command cmd = parse_cmd(0010503); //????
+    Command cmd = parse_cmd(0010503); 
     assert(ss.val == 34);
     assert(ss.a == 5);
     assert(dd.val == 12);
     assert(dd.a == 3);
-            //trace(TRACE, " ... OK\n");
     printf(" ... OK\n");
 }
+
 // тест, что mov и мода 0 работают верно в mov R5, R3
  void test_mov()
 {
-            //trace(TRACE, __FUNCTION__);
+    printf ("test mov\n");    
     reg[3] = 12;    // dd
     reg[5] = 34;    // ss
     Command cmd = parse_cmd(0010503);
     cmd.do_command();
-    assert(reg[3] = 34);
-    assert(reg[5] = 34);
-            //trace(TRACE, " ... OK\n");
-    printf(" ... OK\n");
+    assert(reg[3] == 34);
+    assert(reg[5] == 34);
+    printf(" ... OKe\n");
 }
 
 void test_mode1_toreg()
 {
-            //trace(TRACE, __FUNCTION__)
+    printf ("test mode 1\n");    
     // setup
     reg[3] = 12;    // dd
     reg[5] = 0200;  // ss
     w_write(0200, 34);
 
-
     Command cmd = parse_cmd(0011503);
-
 
     assert(ss.val == 34);
     assert(ss.a == 0200);
     assert(dd.val == 12);
     assert(dd.a == 3);
 
-
     cmd.do_command();
 
-    assert(reg[3] = 34);
+    assert(reg[3] == 34);
     // проверяем, что значение регистра не изменилось
-    assert(reg[5] = 0200);
+    assert(reg[5] == 0200);
 
-            //trace(TRACE, " ... OK\n");
-    printf(" ... OK\n");
+    printf(" ... OK!!!\n");
 }
 
 void test_mode2_toreg()
 {
+    printf ("test mode 2\n");  
+
+
+
     reg[3] = 12;    // dd
     reg[5] = 0200;  // ss
     w_write(0200, 34);
 
-
-    Command cmd = parse_cmd(0011503);
-
-
+    Command cmd = parse_cmd(0012503);
     assert(ss.val == 34);
     assert(ss.a == 0200);
     assert(dd.val == 12);
@@ -155,13 +149,11 @@ void test_mode2_toreg()
 
     cmd.do_command();
 
-    assert(reg[3] = 34);
-
+    assert(reg[3] == 34);
     // проверяем, что значение регистра увеличилось на 2
-    assert(reg[5] = 0202);
+    assert(reg[5] == 0202);
 
-            //trace(TRACE, " ... OK\n");
-    printf(" ... OK\n");
+    printf(" ... OK :)))\n");
 }
 
 #endif

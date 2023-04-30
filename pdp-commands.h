@@ -16,3 +16,4 @@ typedef struct {
 } Command;
 
 extern Command list[];
+Command parse_cmd(word w);

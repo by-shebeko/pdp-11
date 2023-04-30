@@ -24,7 +24,7 @@ Arg get_mr(word w)
         case 1:                         // мода 1, (R1)
             res.a = reg[reg_n];           // в регистре адрес
             res.val = w_read(res.a);  // по адресу - значение
-            printf("R%d ", reg_n);
+            printf("(R%d) ", reg_n);
         break;
 
         case 2:                          // мода 2, (R1)+ или #3

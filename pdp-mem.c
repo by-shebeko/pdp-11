@@ -40,6 +40,10 @@ byte b_read(Adress adr)
 
 word w_read(Adress adr)
 {
+    if (adr < 8) {
+        return reg[adr];
+    }
+    
     assert(adr % 2 == 0);
     return mem[adr];
 }
@@ -50,7 +54,8 @@ void w_write(Adress adr, word w)
         reg[adr] = w; //registers are initialized in registres.c
         return;
     }
-    assert(adr % 2 == 0);
+    else 
+        assert(adr % 2 == 0);
     mem[adr] = w;
 }
 

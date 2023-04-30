@@ -4,7 +4,7 @@ typedef unsigned char byte;      // 8 bit
 typedef unsigned short int word; // 16 bit
 typedef word Adress;             // 16 bit
 
-#define pc reg[7]   // к rep[7] можем обращаться как pc
+#define pc reg[7]   // к reg[7] можем обращаться как pc
 extern word reg[8];
 
 void b_write(Adress adr, byte b); // записывает в адрес переменную
