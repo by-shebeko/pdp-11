@@ -166,7 +166,6 @@ void test_mode3_toreg()
     reg[3] = 01010;  // ss
     w_write(01010, 0776); //записали адрес в адрес
     
-
     Command cmd = parse_cmd(0013301); //mov @(R3)+ R1
     assert(ss.a == 0776);
     assert(ss.val == 5);
@@ -181,6 +180,29 @@ void test_mode3_toreg()
     
 
     printf(" ... OK ;;)\n");
+}
+
+void test_mode4()
+{
+    printf ("test mode 4\n"); 
+
+    reg[3] = 12;    // dd
+    reg[5] = 0202;  // ss
+    w_write(0200, 34);
+
+    Command cmd = parse_cmd(0014503);
+
+    assert(ss.val == 34);
+    assert(ss.a == 0200);
+    assert(dd.val == 12);
+    assert(dd.a == 3);
+
+    cmd.do_command();
+
+    assert(reg[3] == 34);
+    // проверяем, что значение регистра уменьшилось на 2
+    assert(reg[5] == 0200);
+    printf(" ... OKeee\n");
 }
 
 

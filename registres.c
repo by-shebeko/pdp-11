@@ -51,11 +51,15 @@ Arg get_mr(word w)
             printf("@(R%d)+ ", reg_n);
         break;
 
-        /*case 4:
+        case 4:
+            reg[reg_n]-= 2;
+            res.a = reg[reg_n];
+            res.val = w_read(res.a);
 
+			printf("-(R%d) ", reg_n);
         break;
 
-        case 5:
+        /*case 5:
 
         break;*/
 
