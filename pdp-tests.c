@@ -1,4 +1,4 @@
-#ifdef AAA
+//#ifdef AAA
 
 #include "pdp-mem.h"
 #include "pdp-commands.h"
@@ -135,8 +135,6 @@ void test_mode2_toreg()
 {
     printf ("test mode 2\n");  
 
-
-
     reg[3] = 12;    // dd
     reg[5] = 0200;  // ss
     w_write(0200, 34);
@@ -156,4 +154,34 @@ void test_mode2_toreg()
     printf(" ... OK :)))\n");
 }
 
-#endif
+void test_mode3_toreg()
+{
+    printf ("test mode 3\n"); 
+
+
+    w_write(0776, 5);           //в адрес кладём значение, которое хотим получить в к
+    printf("%d\n",w_read(0776));  //0776 = 510
+
+    reg[1] = 12;    // dd
+    reg[3] = 01010;  // ss
+    w_write(01010, 0776); //записали адрес в адрес
+    
+
+    Command cmd = parse_cmd(0013301); //mov @(R3)+ R1
+    assert(ss.a == 0776);
+    assert(ss.val == 5);
+    assert(dd.val == 12);
+    assert(dd.a == 1);
+
+    cmd.do_command();
+
+    // проверяем, что значение регистра увеличилось на 2
+    assert(reg[3] == 01012);    
+    assert(reg[1] == 5);
+    
+
+    printf(" ... OK ;;)\n");
+}
+
+
+//#endif

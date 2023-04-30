@@ -39,6 +39,26 @@ Arg get_mr(word w)
             printf("(R%d)+ ", reg_n);
         break;
 
+        case 3:
+            res.a = w_read(reg[reg_n]); //адрес по адресу
+            res.val = w_read(res.a); //значение из адреса по адресу
+			reg[reg_n] += 2;         //увеличение значения адреса по адресу
+
+            // печать разной мнемоники для PC и других регистров
+            if (reg_n == 7)
+            printf("#%o ", res.val);
+            else
+            printf("@(R%d)+ ", reg_n);
+        break;
+
+        /*case 4:
+
+        break;
+
+        case 5:
+
+        break;*/
+
         // мы еще не дописали другие моды
 
         default:
