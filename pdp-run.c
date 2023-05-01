@@ -17,7 +17,9 @@ void run()
         printf("%06o %06o: ", pc, w);
         pc += 2; 
         Command cmnd = parse_cmd(w);
-        cmnd.do_command();           
+        cmnd.do_command();  
+        print_reg();
+        printf("\n");         
     }
 }
 

@@ -9,12 +9,13 @@ void do_add ();
 void do_halt ();
 void do_unknown ();
 void do_sob();
-
+void do_clr();
 
 Command list[] = {
     {0070000, 0010000, "mov", do_mov, HAS_SS | HAS_DD | HAS_B}, // MOV : B1SSDD
     {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD}, // ADD : 06SSDD
     {0177000, 0077000, "sob", do_sob, HAS_NN | HAS_R},  // SOB : 077RNN
+    {0177000, 0005000, "clr", do_clr, HAS_DD},          // CLR : 0050DD
     {0177777, 0000000, "halt", do_halt, NO_PARAMS},     // HALT : 000000
     {0000000, 0000000, "unknown", do_unknown, NO_PARAMS}, //Эта команда - ПОСЛЕДНЯЯ всегда в массиве!
 };
@@ -74,7 +75,7 @@ void do_halt ()
 void do_mov()
 {
     if(B)
-		b_write(dd.a, ss.val); 
+		b_write(dd.a, (byte)ss.val); 
 	else
 		w_write(dd.a, ss.val);
 }
@@ -95,6 +96,10 @@ void do_sob()
 void do_unknown ()
 {}
 
+void do_clr()
+{
+    dd.val = 0;
+}
 
 
 
