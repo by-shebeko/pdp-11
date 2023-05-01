@@ -18,8 +18,8 @@ void run()
         pc += 2; 
         Command cmnd = parse_cmd(w);
         cmnd.do_command();  
-        print_reg();
-        printf("\n");         
+        //print_reg();
+        //printf("\n");         
     }
 }
 

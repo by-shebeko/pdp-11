@@ -14,9 +14,14 @@ word reg[8] ;        //registers R0, R1, ... R7. R7 program counter
 void b_write(Adress adr, byte b)
 {
     if(adr < 8)
-    {
-        reg[adr] = b & 0xFF; // ?знаковое расширение?
+	{
+		if(b & 0x80)        //проверка знакового бита 0x80 = 1000 0000 in bin
+
+			reg[adr] = 0xFF00 | (word)b;    //заполняем оставшееся 1111... (знак расширение)
+		else
+			reg[adr] = 0x0000 | (word)b;    //заполняем ост 0000... (знак расширение)
     }
+
     else 
     {
         if (adr % 2 == 0)
@@ -34,7 +39,7 @@ byte b_read(Adress adr)
 {
     byte b;                     //will be returned
     if (adr < 8) 
-            b = reg[adr] & 0xFF;    
+            b = (byte)reg[adr] | 0xFF; // ?знаковое расширение?  
 
     else
     {
