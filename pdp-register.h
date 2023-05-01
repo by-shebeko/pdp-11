@@ -9,6 +9,8 @@ typedef struct {
 
 extern Arg ss;
 extern Arg dd;
+extern byte nn;
+extern byte r;
 
 Arg get_mr(word w);
 void print_reg();

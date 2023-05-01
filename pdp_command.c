@@ -8,13 +8,15 @@ void do_mov ();
 void do_add ();
 void do_halt ();
 void do_unknown ();
+void do_sob();
 
 
 Command list[] = {
-    {0170000, 0010000, "mov", do_mov, HAS_SS | HAS_DD},
-    {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD},
-    {0177777, 0000000, "halt", do_halt, NO_PARAMS},
-    {0000000, 0000000, "unknown", do_unknown, NO_PARAMS}, //Эта команда должна быть всегда последней в массиве!
+    {0170000, 0010000, "mov", do_mov, HAS_SS | HAS_DD}, // MOV : 01SSDD
+    {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD}, // ADD : 06SSDD
+    {0177777, 0000000, "halt", do_halt, NO_PARAMS},     // HALT : 000000
+    {0177000, 0077000, "sob", do_sob, HAS_NN | HAS_R},  // SOB : 077RNN
+    {0000000, 0000000, "unknown", do_unknown, NO_PARAMS}, //Эта команда - ПОСЛЕДНЯЯ всегда в массиве!
 };
 
 Command parse_cmd(word w)
@@ -33,7 +35,12 @@ Command parse_cmd(word w)
                 if (cmd.params & HAS_DD)
                     dd = get_mr (w);
     
-                //cmd.do_command();
+                if (cmd.params & HAS_R)
+                    r = ((w>>6) & 7);     //0|...|...|...|rrr|nnn nnn| & 111 == 7 
+
+                if (cmd.params & HAS_NN)
+                    nn = ((w) & 077);       //0|...|...|...|rrr|nnn nnn| & 111111 == 077
+    
                 printf("\n");
                 return cmd;
                 exit(-12);
@@ -64,6 +71,14 @@ void do_add()
     w_write(dd.a, ss.val + dd.val);
 }
 
+void do_sob()
+{
+    reg[r]--;
+
+    if (reg[r] != 0)
+        pc = pc - 2*(nn);
+
+}
 void do_unknown ()
 {}
 

@@ -28,6 +28,12 @@ void run()
 
                 if (cmd.params & HAS_DD)
                     dd = get_mr (w);
+
+                if (cmd.params & HAS_R)
+                    r = ((w>>6) & 7);     //0|...|...|...|rrr|nnn nnn| & 111 == 7 
+
+                if (cmd.params & HAS_NN)
+                    nn = ((w) & 077);       //0|...|...|...|rrr|nnn nnn| & 111111 == 077
     
                 cmd.do_command();
                 printf("\n");    

@@ -5,7 +5,8 @@
 
 Arg ss;
 Arg dd;
-
+byte nn;
+byte r;
 
 Arg get_mr(word w)
 {
@@ -88,5 +89,3 @@ void print_reg()
 	}
 	printf("\n");
 }
-
-
