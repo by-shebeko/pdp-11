@@ -15,10 +15,10 @@ int main(int argc, char * argv[])
     //test_mode0();
     //test_mov();
     //test_mode1_toreg();
-    test_mode5();
-    //load_file(argv[1]);
+    //test_mode5();
+    load_file(argv[1]);
     //mem_dump(0x200, 0xc);
     //fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);
-    //run();
+    run();
     return 0;
 }

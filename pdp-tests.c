@@ -1,4 +1,4 @@
-//#ifdef AAA
+#ifdef AAA
 
 #include "pdp-mem.h"
 #include "pdp-commands.h"
@@ -231,4 +231,4 @@ void test_mode5()
 
     printf(" ... OK :()\n");
 }
-//#endif
+#endif
