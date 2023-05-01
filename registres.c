@@ -31,6 +31,8 @@ Arg get_mr(word w)
         break;
 
         case 2:                         // мода 2, (R1)+ или #3
+            
+            //puts("  qweryui    \n");
             res.a = reg[reg_n];           // в регистре адрес
 
             if(B && (reg_n < 6))   
@@ -65,11 +67,12 @@ Arg get_mr(word w)
         break;
 
         case 4:
+        puts("  hi!!    \n");
             if (B && (reg_n < 6))
             {
                 reg[reg_n]--;
                 res.a = reg[reg_n];
-            res.val = b_read(res.a);
+                res.val = (word)b_read(res.a); //не уверена, но я планировала, чтобы преобразование типа дало знаковое расширение...
 
             }  
 
