@@ -22,7 +22,7 @@ Command list[] = {
 Command parse_cmd(word w)
 {
     int i = 0;
-        for (i = 0; ; ++i)
+        for (i = 0; ; i++)
         {
             Command cmd = list[i];
             if ((w & cmd.mask) == cmd.opcode)
