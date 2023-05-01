@@ -44,7 +44,7 @@ word w_read(Adress adr)
         return reg[adr];
     }
     
-    assert(adr % 2 == 0);
+    assert(adr % 2 == 0);    
     return mem[adr];
 }
 

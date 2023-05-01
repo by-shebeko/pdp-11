@@ -8,6 +8,7 @@
 #define HAS_SS 2        //010 в двоич
 #define HAS_NN 4        //100 в двоич
 #define HAS_R  8        //001000 в двоич
+#define HAS_B  16       //010000 в двоич
 
 typedef struct {
     word mask;

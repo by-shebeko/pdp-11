@@ -11,6 +11,7 @@ extern Arg ss;
 extern Arg dd;
 extern byte nn;
 extern byte r;
+extern byte B;
 
 Arg get_mr(word w);
 void print_reg();

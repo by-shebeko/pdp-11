@@ -12,7 +12,7 @@ void do_sob();
 
 
 Command list[] = {
-    {0170000, 0010000, "mov", do_mov, HAS_SS | HAS_DD}, // MOV : 01SSDD
+    {0070000, 0010000, "mov", do_mov, HAS_SS | HAS_DD | HAS_B}, // MOV : B1SSDD
     {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD}, // ADD : 06SSDD
     {0177000, 0077000, "sob", do_sob, HAS_NN | HAS_R},  // SOB : 077RNN
     {0177777, 0000000, "halt", do_halt, NO_PARAMS},     // HALT : 000000
@@ -27,7 +27,21 @@ Command parse_cmd(word w)
             Command cmd = list[i];
             if ((w & cmd.mask) == cmd.opcode)
             {
-                printf ("%s ", cmd.name);
+                printf ("%s", cmd.name);
+
+                if (cmd.params & HAS_B)
+                {
+                    B = (w >> 15) & 7;       //0|...|111|...|ssssss|dddddd| & 111 == 7
+                    if(B)
+                        printf("b ");  
+                    else 
+                        printf(" ");     
+                }
+
+                else 
+                    printf("  ");
+                
+                    
 
                 if (cmd.params & HAS_SS)
                     ss = get_mr (w >> 6); //тк формат записи двоичного числа ... |ssssss|dddddd|
@@ -59,8 +73,10 @@ void do_halt ()
 }
 void do_mov()
 {
-    // значение аргумента ss пишем по адресу аргумента dd
-    w_write(dd.a, ss.val);
+    if(B)
+		b_write(dd.a, ss.val); 
+	else
+		w_write(dd.a, ss.val);
 }
 void do_add()
 {

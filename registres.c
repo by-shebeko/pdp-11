@@ -3,10 +3,12 @@
 
 #include "pdp-register.h"
 
+
 Arg ss;
 Arg dd;
 byte nn;
 byte r;
+byte B;
 
 Arg get_mr(word w)
 {
@@ -28,16 +30,26 @@ Arg get_mr(word w)
             printf("(R%d) ", reg_n);
         break;
 
-        case 2:                          // мода 2, (R1)+ или #3
+        case 2:                         // мода 2, (R1)+ или #3
             res.a = reg[reg_n];           // в регистре адрес
-            res.val = w_read(res.a);  // по адресу - значение
-            reg[reg_n] += 2;  
+
+            if(B && (reg_n < 6))   
+            {
+                res.val = b_read(res.a);  // по адресу - значение
+                reg[reg_n]++;
+            }                      
+            
+            else
+            {
+                res.val = w_read(res.a);  // по адресу - значение
+                reg[reg_n] += 2; 
+            } 
 
             // печать разной мнемоники для PC и других регистров
             if (reg_n == 7)
-            printf("#%o ", res.val);
+                printf("#%o ", res.val);
             else
-            printf("(R%d)+ ", reg_n);
+                printf("(R%d)+ ", reg_n);
         break;
 
         case 3:
@@ -47,15 +59,27 @@ Arg get_mr(word w)
 
             // печать разной мнемоники для PC и других регистров
             if (reg_n == 7)
-            printf("#%o ", res.val);
+                printf("#%o ", res.val);
             else
-            printf("@(R%d)+ ", reg_n);
+                printf("@(R%d)+ ", reg_n);
         break;
 
         case 4:
-            reg[reg_n]-= 2;
-            res.a = reg[reg_n];
-            res.val = w_read(res.a);
+            if (B && (reg_n < 6))
+            {
+                reg[reg_n]--;
+                res.a = reg[reg_n];
+            res.val = b_read(res.a);
+
+            }  
+
+            else
+            {
+                reg[reg_n]-= 2;
+                res.a = reg[reg_n];
+                res.val = w_read(res.a);
+            }
+                
 
 			printf("-(R%d) ", reg_n);
         break;
