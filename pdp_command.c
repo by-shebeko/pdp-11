@@ -39,16 +39,13 @@ Command parse_cmd(word w)
                     r = ((w>>6) & 7);     //0|...|...|...|rrr|nnn nnn| & 111 == 7 
 
                 if (cmd.params & HAS_NN)
-                    nn = ((w) & 077);       //0|...|...|...|rrr|nnn nnn| & 111111 == 077
+                    nn = ((w) & 077);     //0|...|...|...|rrr|nnn nnn| & 111111 == 077
     
                 printf("\n");
                 return cmd;
                 exit(-12);
                 break;
-            }
-            printf("\n");
-            //return cmd;
-            //exit (-1);
+            }            
         }
     exit (-2);
 }
