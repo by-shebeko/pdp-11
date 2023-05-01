@@ -14,8 +14,8 @@ void do_sob();
 Command list[] = {
     {0170000, 0010000, "mov", do_mov, HAS_SS | HAS_DD}, // MOV : 01SSDD
     {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD}, // ADD : 06SSDD
-    {0177777, 0000000, "halt", do_halt, NO_PARAMS},     // HALT : 000000
     {0177000, 0077000, "sob", do_sob, HAS_NN | HAS_R},  // SOB : 077RNN
+    {0177777, 0000000, "halt", do_halt, NO_PARAMS},     // HALT : 000000
     {0000000, 0000000, "unknown", do_unknown, NO_PARAMS}, //Эта команда - ПОСЛЕДНЯЯ всегда в массиве!
 };
 
