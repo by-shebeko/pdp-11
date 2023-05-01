@@ -13,28 +13,40 @@ word reg[8] ;        //registers R0, R1, ... R7. R7 program counter
 
 void b_write(Adress adr, byte b)
 {
-    if (adr % 2 == 0)
-        mem[adr] = b & 0xFF; 
-    
+    if(adr < 8)
+    {
+        reg[adr] = b & 0xFF; // ?знаковое расширение?
+    }
     else 
-    {    
-       word w = mem[adr-1] & 0xFF; 
-       mem[adr-1] = (b << 8 | w);
+    {
+        if (adr % 2 == 0)
+            mem[adr] = b & 0xFF; 
+    
+        else 
+        {    
+        word w = mem[adr-1] & 0xFF; 
+        mem[adr-1] = (b << 8 | w);
+        }
     }
 }
 
 byte b_read(Adress adr)
 {
     byte b;                     //will be returned
-    if (adr % 2 == 0)
-        b = mem[adr] & 0xFF;    // mask for 1 word (16 bit)
+    if (adr < 8) 
+            b = reg[adr] & 0xFF;    
 
-    else                        //если адрес нечётный, а у нас что-то лежит только по чётным адресам => двигаем
+    else
     {
-        word w = mem[adr-1];
-        b = w >> 8 & 0xFF;
-    }
+        if (adr % 2 == 0)
+            b = mem[adr] & 0xFF;    // mask for 1 word (16 bit)
 
+        else                        //если адрес нечётный, а у нас что-то лежит только по чётным адресам => двигаем
+        {
+            word w = mem[adr-1];
+            b = w >> 8 & 0xFF;
+        }
+    }
     return b;
 }
 

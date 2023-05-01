@@ -72,8 +72,7 @@ Arg get_mr(word w)
             {
                 reg[reg_n]--;
                 res.a = reg[reg_n];
-                res.val = b_read(res.a); //не уверена, но я планировала, чтобы преобразование типа дало знаковое расширение...
-
+                res.val = b_read(res.a); 
             }  
 
             else
