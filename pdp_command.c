@@ -111,7 +111,7 @@ void do_add()
     // сумму значений аргументов ss и dd пишем по адресу аргумента dd
     w_write(dd.a, ss.val + dd.val);
     set_NZ(dd.val + ss.val);
-    C = ((ss.val + dd.val) >> (8 * sizeof(word))) & 1;
+    C = ((ss.val + dd.val) >> 16) & 1; //смотрим за значением в бите, который за старшим
 }
 
 void do_sob()

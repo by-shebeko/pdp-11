@@ -11,6 +11,7 @@ void run();
 int main(int argc, char * argv[])
 {
     test_mem();
+    printf("\n\n%d\n\n", sizeof(word));
     //test_parse_cmd();
     test_NZC();
     //test_mov();
