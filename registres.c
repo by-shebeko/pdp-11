@@ -8,7 +8,9 @@ Arg ss;
 Arg dd;
 byte nn;
 byte r;
-byte B;
+byte xx;
+byte B; //flag for byte operation
+
 
 Arg get_mr(word w)
 {

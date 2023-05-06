@@ -1,22 +1,44 @@
+// flags N, Z, C are also here
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "pdp-commands.h"
 #include "pdp-register.h"
 
+byte N;      // N = is negative (старший бит)
+byte Z;      // Z = is zero
+byte C;
+
+void set_NZ(word w);          // flags!
+void set_C(word a, word b);
+void print_NZC();
+
 void do_mov ();
-void do_add ();
+void do_add ();     //!!!замена С!!!
 void do_halt ();
 void do_unknown ();
 void do_sob();
-void do_clr();
+void do_clr();      //!!!замена флагов!!!
+
+void do_br();       //ветка без условия
+void do_beq();      //ветка с условием Z = 1
+void do_bpl();
+void do_tst();      //test
+void do_jmp();      //переход на указанный адрес
 
 Command list[] = {
     {0070000, 0010000, "mov", do_mov, HAS_SS | HAS_DD | HAS_B}, // MOV : B1SSDD
     {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD}, // ADD : 06SSDD
     {0177000, 0077000, "sob", do_sob, HAS_NN | HAS_R},  // SOB : 077RNN
     {0177000, 0005000, "clr", do_clr, HAS_DD},          // CLR : 0050DD
-    {0177777, 0000000, "halt", do_halt, NO_PARAMS},     // HALT : 000000
+    
+    {0177400, 0000400, 	"br", do_br, HAS_XX},           // BR : 0004XX
+    {0001400, 0177400, "beq", do_beq, HAS_XX},          // BEQ : 0014XX Branch if Equal	If Z=1
+	{0100000, 0177400, "bpl", do_bpl, HAS_XX},          // BPL : 1000XX Branch if Plus	If N=0
+    {0105700, 0177700, "tst", do_tst, HAS_DD},          // TST : B057DD test d 
+	{0000100, 0177700, "jmp", do_jmp, HAS_DD},          // JMP : 0001DD	Jump PC=d
+    
+    {0177777, 0000000, "halt", do_halt, NO_PARAMS},     // HALT : 000000   
     {0000000, 0000000, "unknown", do_unknown, NO_PARAMS}, //Эта команда - ПОСЛЕДНЯЯ всегда в массиве!
 };
 
@@ -56,6 +78,9 @@ Command parse_cmd(word w)
                 if (cmd.params & HAS_NN)
                     nn = ((w) & 077);     //0|...|...|...|rrr|nnn nnn| & 111111 == 077
     
+                if (cmd.params & HAS_XX)
+                    xx = (w & 0xff);
+
                 printf("\n");
                 return cmd;
                 exit(-12);
@@ -78,11 +103,15 @@ void do_mov()
 		b_write(dd.a, (byte)ss.val); 
 	else
 		w_write(dd.a, ss.val);
+    set_NZ (ss.val);
+
 }
 void do_add()
 {
     // сумму значений аргументов ss и dd пишем по адресу аргумента dd
     w_write(dd.a, ss.val + dd.val);
+    set_NZ(dd.val + ss.val);
+    C = ((ss.val + dd.val) >> (8 * sizeof(word))) & 1;
 }
 
 void do_sob()
@@ -99,7 +128,61 @@ void do_unknown ()
 void do_clr()
 {
     dd.val = 0;
+    N = 0;
+	Z = 1;
+	C = 0;
+	B = 0;      
 }
 
+void do_br () 
+{
+	pc = pc + xx * 2;
+}
 
+void do_beq() 
+{
+    if(Z)
+        do_br();
+}
 
+void do_bpl() 
+{
+    if(N == 0)
+        do_br();
+}
+
+void do_tst()
+{
+	set_NZ(dd.val);
+	C = 0;
+	B = 0;
+}
+
+void do_jmp() 
+{
+	pc = dd.a; 
+}
+
+//funcs for flags
+void set_NZ(word w)
+{
+    if (w == 0)
+    {
+        Z = 1;
+        N = 0;
+    }
+
+    else
+    {
+        Z = 0;
+        if (B)     //если байтовая операция, то берём по старшему биту из 8м
+            N = (w >> 7) & 1; 
+        else
+	        N = (w >> 15) & 1; 
+    }
+}
+
+void print_NZC()
+{
+	printf("\n N=%d Z=%d C=%d \n",N ,Z ,C);
+}

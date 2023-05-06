@@ -8,3 +8,5 @@ void test_mode2_toreg();
 void test_mode3_toreg();
 void test_mode4();
 void test_mode5();
+
+void test_NZC();

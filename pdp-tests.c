@@ -1,4 +1,4 @@
-#ifdef AAA
+//#ifdef AAA
 
 #include "pdp-mem.h"
 #include "pdp-commands.h"
@@ -19,11 +19,11 @@ void test_mem()
 
     // пишем байт, читаем байт
     fprintf(stderr, "Пишем и читаем байт по четному адресу\n");
-    a = 0;
+    a = 20;
     b0 = 0x12;
     b_write(a, b0);
     bres = b_read(a);
-    // тут полезно написать отладочную печать a, b0, bres
+    //отладочная печать a, b0, bres
     fprintf(stderr, "a=%06o b0=%hhx bres=%hhx\n", a, b0, bres);
     assert(b0 == bres);
     // аналогично стоит проверить чтение и запись по нечетному адресу
@@ -231,4 +231,65 @@ void test_mode5()
 
     printf(" ... OK :()\n");
 }
-#endif
+
+void test_NZC()
+{
+    printf ("test flags N Z C\n");
+
+    printf ("test -1 + (-1)\n");
+    
+    reg[3] = -1;
+    reg[5] = -1;
+
+    Command cmd = parse_cmd(0060305); //складываем значения из 3го и 5го регистров и записываем в 3
+    cmd.do_command();
+
+    word res = reg[5];   //1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|0| = -2
+    
+    set_NZ (res);
+    print_NZC();
+
+    assert (N == 1);
+    assert (Z == 0);
+    assert (C == 1);
+
+    printf ("test -1 + 1\n");
+    reg[3] = -1;
+    reg[5] = 1;
+
+    cmd = parse_cmd(0060305); //складываем значения из 3го и 5го регистров и записываем в 3
+    cmd.do_command();
+
+    res = reg[5];   //1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|0| = -2
+    set_NZ (res);
+    print_NZC();
+
+    assert (N == 0);
+    assert (Z == 1);
+    assert (C == 1);
+
+    printf ("test 16384 + 16384 (sign overflow)\n");
+    reg[3] = 16384; // 1 0..0
+    reg[5] = 16384;
+
+    cmd = parse_cmd(0060305); //складываем значения из 3го и 5го регистров и записываем в 3
+    cmd.do_command();
+
+    res = reg[5];   //1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|0| = -2
+    printf("%x", res);
+    set_NZ (res);
+    print_NZC();
+
+    assert (N == 1);
+    assert (Z == 0);
+    assert (C == 0);
+
+    printf("don't worry be happy!");
+
+
+
+    
+
+
+}
+//#endif

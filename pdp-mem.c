@@ -39,7 +39,7 @@ byte b_read(Adress adr)
 {
     byte b;                     //will be returned
     if (adr < 8) 
-            b = (byte)reg[adr] | 0xFF; // ?знаковое расширение?  
+            b = (byte)reg[adr] | 0xFF;  
 
     else
     {

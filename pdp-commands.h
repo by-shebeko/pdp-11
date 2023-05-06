@@ -9,6 +9,11 @@
 #define HAS_NN 4        //100 в двоич
 #define HAS_R  8        //001000 в двоич
 #define HAS_B  16       //010000 в двоич
+#define HAS_XX 32       //100000 в двоич
+
+extern byte N;      // N = is negative (старший бит)
+extern byte Z;      // Z = is zero
+extern byte C;      // C = carry (после старшего бита если переполнилось)
 
 typedef struct {
     word mask;
@@ -20,3 +25,5 @@ typedef struct {
 
 extern Command list[];
 Command parse_cmd(word w);
+void set_NZ(word w);
+void print_NZC();
