@@ -10,7 +10,6 @@ byte Z;      // Z = is zero
 byte C;
 
 void set_NZ(word w);          // flags!
-void set_C(word a, word b);
 void print_NZC();
 
 void do_mov ();
