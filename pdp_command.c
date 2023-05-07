@@ -136,7 +136,7 @@ void do_clr()
 
 void do_br () 
 {
-	pc = pc + xx * 2;
+	pc = pc + 2*(xx);
 }
 
 void do_beq() 
@@ -155,7 +155,6 @@ void do_tst()
 {
 	set_NZ(dd.val);
 	C = 0;
-	B = 0;
 }
 
 void do_jmp() 
