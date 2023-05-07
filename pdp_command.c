@@ -30,13 +30,13 @@ Command list[] = {
     {0070000, 0010000, "mov", do_mov, HAS_SS | HAS_DD | HAS_B}, // MOV : B1SSDD
     {0170000, 0060000, "add", do_add, HAS_SS | HAS_DD}, // ADD : 06SSDD
     {0177000, 0077000, "sob", do_sob, HAS_NN | HAS_R},  // SOB : 077RNN
-    {0177000, 0005000, "clr", do_clr, HAS_DD},          // CLR : 0050DD
+    {0077700, 0005000, "clr", do_clr, HAS_DD | HAS_B},  // CLR : B050DD 1/0 000|101 000|dddddd|
     
-    {0177400, 0000400, 	"br", do_br, HAS_XX},           // BR : 0004XX
-    {0001400, 0177400, "beq", do_beq, HAS_XX},          // BEQ : 0014XX Branch if Equal	If Z=1
-	{0100000, 0177400, "bpl", do_bpl, HAS_XX},          // BPL : 1000XX Branch if Plus	If N=0
-    {0105700, 0177700, "tst", do_tst, HAS_DD},          // TST : B057DD test d 
-	{0000100, 0177700, "jmp", do_jmp, HAS_DD},          // JMP : 0001DD	Jump PC=d
+    {0177400, 0000400, 	"br", do_br, HAS_XX},           // BR : 0004XX -> 77!4! может меняться на 7!!! при отрицательном перемещении!
+    {0177400, 0001400, "beq", do_beq, HAS_XX},          // BEQ : 0014XX Branch if Equal	If Z=1
+	{0177400, 0100000, "bpl", do_bpl, HAS_XX},          // BPL : 1000XX Branch if Plus	If N=0
+    {0077700, 0005700, "tst", do_tst, HAS_DD | HAS_B},  // TST : B057DD test d 
+	{0177700, 0000100, "jmp", do_jmp, HAS_DD},          // JMP : 0001DD	Jump PC=d
     
     {0177777, 0000000, "halt", do_halt, NO_PARAMS},     // HALT : 000000   
     {0000000, 0000000, "unknown", do_unknown, NO_PARAMS}, //Эта команда - ПОСЛЕДНЯЯ всегда в массиве!

@@ -10,17 +10,20 @@ void run();
 
 int main(int argc, char * argv[])
 {
-    test_mem();
-    printf("\n\n%d\n\n", sizeof(word));
+    //test_mem();
     //test_parse_cmd();
-    test_NZC();
+    //test_NZC();
     //test_mov();
     //test_mode1_toreg();
     //test_mode5();
-    //load_file(argv[1]);
-    //mem_dump(0x40, 0x5);
-    //mem_dump(0x200, 0x12);
-    //fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);
-    //run();
+        fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);
+
+    load_file(argv[1]);
+        fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);
+
+    mem_dump(0x40, 0xa);
+    mem_dump(0x200, 0x10);
+    fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);
+    run();
     return 0;
 }

@@ -8,7 +8,7 @@ Arg ss;
 Arg dd;
 byte nn;
 byte r;
-byte xx;
+char xx;
 byte B; //flag for byte operation
 
 

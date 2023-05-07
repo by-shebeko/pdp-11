@@ -12,7 +12,7 @@ extern Arg dd;
 extern byte nn;
 extern byte r;
 extern byte B;
-extern byte xx;
+extern char xx; //оно знаковое!!!!!!!
 
 Arg get_mr(word w);
 void print_reg();

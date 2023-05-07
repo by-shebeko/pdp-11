@@ -1,4 +1,4 @@
-//#ifdef AAA
+#ifdef AAA
 
 #include "pdp-mem.h"
 #include "pdp-commands.h"
@@ -292,4 +292,4 @@ void test_NZC()
 
 
 }
-//#endif
+#endif
