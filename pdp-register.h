@@ -14,5 +14,8 @@ extern byte r;
 extern byte B;
 extern char xx; //оно знаковое!!!!!!!
 
+#define ostat = 177564  ; регистр состояния дисплея дисплея
+#define odata = 177566  ; регистр данных дисплея
+
 Arg get_mr(word w);
 void print_reg();
