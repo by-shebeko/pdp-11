@@ -5,6 +5,10 @@ typedef unsigned short int word; // 16 bit
 typedef word Adress;             // 16 bit
 
 #define pc reg[7]   // к reg[7] можем обращаться как pc
+
+#define ostat 0177564  // регистр состояния дисплея дисплея
+#define odata 0177566  // регистр данных дисплея
+
 extern word reg[8];
 
 void b_write(Adress adr, byte b); // записывает в адрес переменную

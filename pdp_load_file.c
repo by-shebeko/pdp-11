@@ -9,6 +9,7 @@ void load_file(const char* filename)
 
 	byte b = 0x00; //в неё считаются 
 	word i = 0x0000;
+	//w_write(ostat, 0xffff);
 	
 	FILE* fin = fopen(filename, "r"); //открытие файла для чтения. Если файла не существует, работа программы завершиться с ошибкой.
 	
@@ -16,7 +17,7 @@ void load_file(const char* filename)
     {
 		for (i = 0x0000; i < N; i++) 
         {
-			fscanf(fin ,"%2hhx", &b); //считаываем значение
+			fscanf(fin ,"%2hhx", &b); //считываем значение
 			b_write(mem_adr + i, b);  //записываем в массив с данными и двигаем указатель
 		}
 	}

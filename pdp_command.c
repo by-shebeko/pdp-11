@@ -146,14 +146,15 @@ void do_beq()
 
 void do_bpl() 
 {
+    printf(" %.6o", (pc + (2 * xx)) & 0xFFFF);
     if(N == 0)
         do_br();
 }
 
 void do_tst()
 {
-	set_NZ(dd.val);
-	C = 0;
+    C = 0;
+	set_NZ(dd.val);	
 }
 
 void do_jmp() 
