@@ -78,7 +78,7 @@ Command parse_cmd(word w)
                 if (cmd.params & HAS_NN)
                     nn = ((w) & 077);     //0|...|...|...|rrr|nnn nnn| & 111111 == 077
     
-                if (cmd.params & HAS_XX)
+                if (cmd.params & HAS_XX)  //0|...|...|...|1xx|xxx xxx| & 11111111 == ff
                     xx = (w & 0xff);
 
                 printf("\n");
