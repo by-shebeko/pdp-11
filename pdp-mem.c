@@ -24,7 +24,6 @@ void b_write(Adress adr, byte b)
     if(adr < 8)
 	{
 		if((b >> 7) == 1)        //проверка знакового бита 1000 0000
-
 			reg[adr] = 0xFF00 | b;    //заполняем оставшееся 1111... (знак расширение)
 		else
 			reg[adr] = 0x0000 | b;    //заполняем ост 0000... (знак расширение)
@@ -86,7 +85,7 @@ void w_write(Adress adr, word w)
     }
 
     if (adr < 8) {
-        reg[adr] = w; //registers are initialized in registres.c
+        reg[adr] = w & 0xFFFF; //registers are initialized in registres.c
         return;
     }
     else 

@@ -8,8 +8,10 @@
 byte N;      // N = is negative (старший бит)
 byte Z;      // Z = is zero
 byte C;
+long int C_interpreneur;
 
 void set_NZ(word w);          // flags!
+void set_C(long int x);
 void print_NZC();
 
 void do_mov ();
@@ -26,6 +28,7 @@ void do_tst();      //test
 void do_jmp();      //переход на указанный адрес
 void do_jsr();
 void do_rts();
+void do_sub();
 
 Command list[] = {
     {0070000, 0010000, "mov", do_mov, HAS_SS | HAS_DD | HAS_B}, // MOV : B1SSDD
@@ -38,7 +41,7 @@ Command list[] = {
 	{0177400, 0100000, "bpl", do_bpl, HAS_XX},          // BPL : 1000XX Branch if Plus	If N=0
     {0077700, 0005700, "tst", do_tst, HAS_DD | HAS_B},  // TST : B057DD test d 
 	{0177700, 0000100, "jmp", do_jmp, HAS_DD},          // JMP : 0001DD	Jump PC=d
-
+    {0170000, 0160000, "sub", do_sub, HAS_SS | HAS_DD}, //SUB s,d	16SSDD	****	Subtract	d=d-s    
     {0177000, 0004000, "jsr", do_jsr, HAS_R | HAS_DD},  //JSR r,d	004RDD	----	Jump to Subroutine	r=PC,PC=d
     {0177770, 0000200, "rts", do_rts, HAS_0R},          //RTS r	00020R	----	Return from Subroutine	PC=r,r=(SP)+
 
@@ -60,9 +63,8 @@ Command parse_cmd(word w)
                 {
                     B = (w >> 15) & 7;       //0|...|111|...|ssssss|dddddd| & 111 == 7
                     if(B)
-                        printf("b ");  
-                    else 
-                        printf(" ");     
+                        printf("b");  
+                    printf(" ");     
                 }
 
                 else 
@@ -116,7 +118,9 @@ void do_add()
     // сумму значений аргументов ss и dd пишем по адресу аргумента dd
     w_write(dd.a, ss.val + dd.val);
     set_NZ(dd.val + ss.val);
-    C = ((ss.val + dd.val) >> 16) & 1; //смотрим за значением в бите, который за старшим
+
+    C_interpreneur = ((long int)dd.val + (long int)ss.val);
+    set_C(C_interpreneur);
 }
 
 void do_sob()
@@ -182,6 +186,16 @@ void do_rts()
 	reg[r0] = w_read(sp);
 	sp += 2;
 }
+
+void do_sub()
+{
+    // сумму значений аргументов ss и dd пишем по адресу аргумента dd
+    w_write(dd.a, dd.val - ss.val);
+    set_NZ(dd.val - ss.val);
+    C_interpreneur = (long int)(((short int)dd.val)  - ((short int)ss.val)) & 0x1FFFF;
+    set_C(C_interpreneur);
+}
+
 //funcs for flags
 void set_NZ(word w)
 {
@@ -200,7 +214,11 @@ void set_NZ(word w)
 	        N = (w >> 15) & 1; 
     }
 }
-
+void set_C(long int x)
+{
+    printf ("%lx\n", x);
+    C = (x >> 16) & 1;
+}
 void print_NZC()
 {
 	printf("\n N=%d Z=%d C=%d \n",N ,Z ,C);
