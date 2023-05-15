@@ -13,6 +13,7 @@ extern byte nn;
 extern byte r;
 extern byte B;
 extern char xx; //оно знаковое!!!!!!!
+extern byte r0;
 
 Arg get_mr(word w);
 void print_reg();

@@ -10,7 +10,7 @@ byte nn;
 byte r;
 char xx;
 byte B; //flag for byte operation
-
+byte r0; //register, in which we grab
 
 Arg get_mr(word w)
 {
@@ -98,7 +98,6 @@ Arg get_mr(word w)
                 res.val = w_read(res.a);
             }
                 
-
 			printf("-(R%d) ", reg_n);
         break;
 
@@ -113,6 +112,24 @@ Arg get_mr(word w)
 
             printf("@-(R%d) ", reg_n);
         break;
+
+        case 6:                         
+            word x = w_read(pc);        //x = mem[pc]     // прочитали очередное слово в коде
+            pc += 2;                    //pc += 2
+            res.a = reg[reg_n] + x;     //adr = reg[n]    // адрес указателя
+                                        //adr = adr + x   // адрес указателя со смещением
+            if (B)                      //val = mem[adr]  // разыменование
+                res.val = b_read(res.a);
+            else 
+                res.val = w_read (res.a);
+
+            //печать моды 
+            if (reg_n == 7)
+                printf("%.6o ", res.a);
+            else 
+                printf ("%.6o(R%o) ", x, reg_n);
+                                                   
+        break;                               
 
         // мы еще не дописали другие моды
         default:

@@ -24,6 +24,8 @@ void do_beq();      //ветка с условием Z = 1
 void do_bpl();
 void do_tst();      //test
 void do_jmp();      //переход на указанный адрес
+void do_jsr();
+void do_rts();
 
 Command list[] = {
     {0070000, 0010000, "mov", do_mov, HAS_SS | HAS_DD | HAS_B}, // MOV : B1SSDD
@@ -36,7 +38,10 @@ Command list[] = {
 	{0177400, 0100000, "bpl", do_bpl, HAS_XX},          // BPL : 1000XX Branch if Plus	If N=0
     {0077700, 0005700, "tst", do_tst, HAS_DD | HAS_B},  // TST : B057DD test d 
 	{0177700, 0000100, "jmp", do_jmp, HAS_DD},          // JMP : 0001DD	Jump PC=d
-    
+
+    {0177000, 0004000, "jsr", do_jsr, HAS_R | HAS_DD},  //JSR r,d	004RDD	----	Jump to Subroutine	r=PC,PC=d
+    {0177770, 0000200, "rts", do_rts, HAS_0R},          //RTS r	00020R	----	Return from Subroutine	PC=r,r=(SP)+
+
     {0177777, 0000000, "halt", do_halt, NO_PARAMS},     // HALT : 000000   
     {0000000, 0000000, "unknown", do_unknown, NO_PARAMS}, //Эта команда - ПОСЛЕДНЯЯ всегда в массиве!
 };
@@ -63,8 +68,6 @@ Command parse_cmd(word w)
                 else 
                     printf("  ");
                 
-                    
-
                 if (cmd.params & HAS_SS)
                     ss = get_mr (w >> 6); //тк формат записи двоичного числа ... |ssssss|dddddd|
 
@@ -73,6 +76,9 @@ Command parse_cmd(word w)
     
                 if (cmd.params & HAS_R)
                     r = ((w>>6) & 7);     //0|...|...|...|rrr|nnn nnn| & 111 == 7 
+
+                if (cmd.params & HAS_0R)  //0|...|...|...|...|... rrr| & 111 == 7
+                    r0 = (w & 7);
 
                 if (cmd.params & HAS_NN)
                     nn = ((w) & 077);     //0|...|...|...|rrr|nnn nnn| & 111111 == 077
@@ -146,7 +152,6 @@ void do_beq()
 
 void do_bpl() 
 {
-    printf(" %.6o", (pc + (2 * xx)) & 0xFFFF);
     if(N == 0)
         do_br();
 }
@@ -162,6 +167,21 @@ void do_jmp()
 	pc = dd.a; 
 }
 
+void do_jsr()
+{
+    sp -= 2; 
+
+	w_write(sp, reg[r]);
+	reg[r] = pc;
+	pc = dd.a;
+}
+
+void do_rts()
+{
+    pc = reg[r0];
+	reg[r0] = w_read(sp);
+	sp += 2;
+}
 //funcs for flags
 void set_NZ(word w)
 {

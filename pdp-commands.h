@@ -10,6 +10,7 @@
 #define HAS_R  8        //001000 в двоич
 #define HAS_B  16       //010000 в двоич
 #define HAS_XX 32       //100000 в двоич
+#define HAS_0R 64       //1000000
 
 extern byte N;      // N = is negative (старший бит)
 extern byte Z;      // Z = is zero

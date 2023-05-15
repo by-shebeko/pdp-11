@@ -14,8 +14,13 @@ word reg[8] ;        //registers R0, R1, ... R7. R7 program counter
 void b_write(Adress adr, byte b)
 {
     if (adr == odata)
-       printf(" %c", b);
-
+    {
+       //printf(" %c", b);
+       FILE* myfile;
+       myfile = fopen("out.txt", "a");
+       fprintf(myfile, "%c\n", b);
+       fclose(myfile);
+    }
     if(adr < 8)
 	{
 		if((b >> 7) == 1)        //проверка знакового бита 1000 0000
@@ -72,7 +77,13 @@ word w_read(Adress adr)
 void w_write(Adress adr, word w)
 {
     if (adr == odata)
-       printf(" %c", w);
+    {
+       //printf(" %c", b);
+       FILE* myfile;
+       myfile = fopen("out.txt", "a");
+       fprintf(myfile, "%c\n", w);
+       fclose(myfile);
+    }
 
     if (adr < 8) {
         reg[adr] = w; //registers are initialized in registres.c

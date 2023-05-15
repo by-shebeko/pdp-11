@@ -5,7 +5,7 @@ typedef unsigned short int word; // 16 bit
 typedef word Adress;             // 16 bit
 
 #define pc reg[7]   // к reg[7] можем обращаться как pc
-
+#define sp reg[6]
 #define ostat 0177564  // регистр состояния дисплея дисплея
 #define odata 0177566  // регистр данных дисплея
 
