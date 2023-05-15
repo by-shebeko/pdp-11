@@ -97,7 +97,6 @@ Arg get_mr(word w)
         break;
 
         // мы еще не дописали другие моды
-
         default:
         printf("Mode %d not implemented yet!\n", mode);
         exit(1);

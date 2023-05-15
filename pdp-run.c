@@ -9,7 +9,7 @@ void run()
     printf("\n---Running---\n");
     //int i = 0;
     pc = 01000;         //восьмеричное начало адреса
-
+    w_write (ostat, 0xFF);
     while(1)
     {
         word w = w_read(pc);

@@ -3,7 +3,7 @@
 
 #include "pdp-mem.h"
 
-# define MEMSIZE (56*1024)      //redefined! 64 -> 56
+# define MEMSIZE (64*1024)      //redefined! 64 -> 56
 
 
 static word mem[MEMSIZE];   // 1 word = 2 bytes, mem[i] - слово по адресу i, 
@@ -43,6 +43,7 @@ void b_write(Adress adr, byte b)
 byte b_read(Adress adr)
 {
     byte b;                     //will be returned
+
     if (adr < 8) 
             b = reg[adr] | 0xFF;  
 
@@ -72,6 +73,9 @@ word w_read(Adress adr)
 
 void w_write(Adress adr, word w)
 {
+    if (adr == odata)
+       printf(" %c", w);
+
     if (adr < 8) {
         reg[adr] = w; //registers are initialized in registres.c
         return;

@@ -9,7 +9,6 @@ void load_file(const char* filename)
 
 	byte b = 0x00; //в неё считаются 
 	word i = 0x0000;
-	//w_write(ostat, 0xffff);
 	
 	FILE* fin = fopen(filename, "r"); //открытие файла для чтения. Если файла не существует, работа программы завершиться с ошибкой.
 	
