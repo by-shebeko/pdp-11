@@ -58,18 +58,32 @@ Arg get_mr(word w)
 
         case 3:
             res.a = w_read(reg[reg_n]); //адрес по адресу
-            res.val = w_read(res.a); //значение из адреса по адресу
-			reg[reg_n] += 2;         //увеличение значения адреса по адресу
+            
+            if (B) 
+                res.val = b_read(res.a);
+            else
+                res.val = w_read(res.a); //значение из адреса по адресу
 
             // печать разной мнемоники для PC и других регистров
             if (reg_n == 7)
-                printf("#%o ", res.val);
+            {
+                if (res.a == ostat)
+                	printf("@#%o", ostat); 
+
+                else if (res.a == odata) 
+				printf("@#%o", odata);
+
+                else
+                    printf("#%o ", res.val);
+            }
             else
                 printf("@(R%d)+ ", reg_n);
+            
+			reg[reg_n] += 2;         //увеличение значения адреса по адресу
         break;
 
         case 4:
-        puts("  hi!!    \n");
+        //puts("  hi!!    \n");
             if (B && (reg_n < 6))
             {
                 reg[reg_n]--;
@@ -91,7 +105,11 @@ Arg get_mr(word w)
         case 5:
             reg[reg_n] -= 2;
 			res.a = w_read(reg[reg_n]);
-            res.val = w_read(res.a);
+
+            if (B)
+                res.val = b_read(res.a);
+            else 
+                res.val = w_read(res.a);
 
             printf("@-(R%d) ", reg_n);
         break;

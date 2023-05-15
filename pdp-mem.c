@@ -11,12 +11,10 @@ static word mem[MEMSIZE];   // 1 word = 2 bytes, mem[i] - слово по адр
                             //Нечетные ячейки массива не используются
 word reg[8] ;        //registers R0, R1, ... R7. R7 program counter
 
-
 void b_write(Adress adr, byte b)
 {
     if (adr == odata)
        printf(" %c", b);
-
 
     if(adr < 8)
 	{
@@ -43,7 +41,7 @@ void b_write(Adress adr, byte b)
 byte b_read(Adress adr)
 {
     byte b;                     //will be returned
-
+    
     if (adr < 8) 
             b = reg[adr] | 0xFF;  
 
